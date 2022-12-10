@@ -1,0 +1,86 @@
+{
+    "type": "actions",
+    "elements": [
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "ps",
+                "emoji": true
+            },
+            "action_id": "ps"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "clean",
+                "emoji": true
+            },
+            "action_id": "clean"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "pre",
+                "emoji": true
+            },
+            "action_id": "pre"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "compile",
+                "emoji": true
+            },
+            "action_id": "compile"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "post",
+                "emoji": true
+            },
+            "action_id": "post"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "plsql",
+                "emoji": true
+            },
+            "action_id": "plsql"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "build",
+                "emoji": true
+            },
+            "action_id": "build"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "start",
+                "emoji": true
+            },
+            "action_id": "start"
+        },
+        {
+            "type": "button",
+            "text": {
+                "type": "plain_text",
+                "text": "sync",
+                "emoji": true
+            },
+            "action_id": "sync"
+        }
+    ]
+}

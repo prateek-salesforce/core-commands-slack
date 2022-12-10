@@ -1,0 +1,111 @@
+{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "plain_text",
+				"text": ":tv: Core Commands supported",
+				"emoji": true
+			}
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "ps",
+						"emoji": true
+					},
+					"action_id": "-ps"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "clean",
+						"emoji": true
+					},
+					"action_id": "-clean"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "pre",
+						"emoji": true
+					},
+					"action_id": "-pre"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "compile",
+						"emoji": true
+					},
+					"action_id": "-compile"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "post",
+						"emoji": true
+					},
+					"action_id": "-post"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "plsql",
+						"emoji": true
+					},
+					"action_id": "-plsql"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "build",
+						"emoji": true
+					},
+					"action_id": "-build"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "start",
+						"emoji": true
+					},
+					"action_id": "-start"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"text": "sync",
+						"emoji": true
+					},
+					"action_id": "-sync"
+				}
+			]
+		},
+		{ 
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": ":warning: *Steps*\n1. Go to 'Messages' tab on right \n2. Type and enter 'core' \n3. Click the desired core step \n4. View opened terminal window to monitor progress"
+			}
+		},
+		{
+			"type": "divider"
+		}
+	]
+}
