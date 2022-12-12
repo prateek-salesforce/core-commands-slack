@@ -1,0 +1,14 @@
+{
+    "blocks" : [
+        {
+            "type": "divider"
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": ""
+            }
+        }
+    ]
+}

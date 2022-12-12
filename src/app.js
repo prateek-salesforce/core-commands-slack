@@ -1,17 +1,17 @@
 const { App } = require('@slack/bolt');
 
-import { SLACK_BOT_TOKEN, SLACK_SIGNING_SECRET, SLACK_APP_TOKEN, PORT } from './constants.js'
+import { SLACK_BOT_TOKEN, SLACK_SIGNING_SECRET, PORT } from './constants.js'
 import { exec } from 'child_process';
 
 import home_json from '../ui/home.json';
 import actions_json from '../ui/actions.json';
+import running_json from '../ui/running.json';
+import terminal_json from '../ui/terminal.json';
 
 // Initializes yourx app with your bot token and signing secret
 const app = new App({
     token: SLACK_BOT_TOKEN,
     signingSecret: SLACK_SIGNING_SECRET,
-    socketMode: true,
-    appToken: SLACK_APP_TOKEN,
     port: PORT || 3000
 });
   
@@ -36,30 +36,18 @@ app.message('core', async ({ message, say }) => {
 
 app.action('ps', async ({ body, ack, say }) => {
     // Acknowledge the action
-    await ack();
-    await say({
-      blocks: [
-          {
-              "type": "section",
-              "text": {
-                  "type": "mrkdwn",
-                  "text": "---- Running ps ----"
-              }
-          }
-      ]
-    });
 
-    let {stdout} = await executeAsyncCommand('sh shell/ps.sh');
+    await ack();
+    await say(
+       getRunningUI('ps')
+    );
+
+    const channelId = body.channel.id;
+    let {stdout} = await executeAsyncCommand(`sh shell/ps.sh`);
     
     await say({
         blocks: [
-            {
-              "type": "section",
-              "text": {
-                  "type": "mrkdwn",
-                  "text": '---- ps successful ----'
-              }
-            }
+          getTerminalText(stdout)  
         ]
     })
 });
@@ -67,29 +55,15 @@ app.action('ps', async ({ body, ack, say }) => {
 app.action('clean', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running clean ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('clean')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh clean');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -98,29 +72,15 @@ app.action('clean', async ({ body, ack, say }) => {
 app.action('pre', async ({ body, ack, say }) => {
     // Acknowledge the action
     await ack();
-    await say({
-      blocks: [
-          {
-              "type": "section",
-              "text": {
-                  "type": "mrkdwn",
-                  "text": "---- Running pre ----"
-              }
-          }
-      ]
-    });
+    await say(
+      getRunningUI('pre')
+    );
 
     let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh pre');
 
     await say({
       blocks: [
-          {
-              "type": "section",
-              "text": {
-                  "type": "mrkdwn",
-                  "text": stdout
-              }
-          }
+          getTerminalText(stdout)
       ]
     })
 });
@@ -128,29 +88,15 @@ app.action('pre', async ({ body, ack, say }) => {
 app.action('compile', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running compile ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('compile')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh compile');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -159,29 +105,15 @@ app.action('compile', async ({ body, ack, say }) => {
 app.action('post', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running post ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('post')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh post');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -190,29 +122,15 @@ app.action('post', async ({ body, ack, say }) => {
 app.action('plsql', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running plsql ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('plsql')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh plsql');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -221,29 +139,15 @@ app.action('plsql', async ({ body, ack, say }) => {
 app.action('build', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running build ( compile, post, plsql ) ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('build')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/build.sh');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -252,29 +156,15 @@ app.action('build', async ({ body, ack, say }) => {
 app.action('start', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running start ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('start')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/start.sh');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
@@ -283,33 +173,18 @@ app.action('start', async ({ body, ack, say }) => {
 app.action('sync', async ({ body, ack, say }) => {
   // Acknowledge the action
   await ack();
-  await say({
-    blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "---- Running sync ----"
-            }
-        }
-    ]
-  });
+  await say(
+    getRunningUI('sync')
+  );
 
   let {stdout, stderr} = await executeAsyncCommand('sh shell/sync.sh');
 
   await say({
     blocks: [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": stdout
-            }
-        }
+        getTerminalText(stdout)
     ]
   })
 });
-
 
 
 // Listen for users opening your App Home
@@ -352,4 +227,18 @@ async function executeAsyncCommand(cmd) {
       }
     });
   });
+}
+
+
+function getRunningUI(step) {
+  let section = Object.assign({},running_json);
+  section.blocks[1].text.text = "---- Running " + `${step} ${new Date().toTimeString().split(" ")[0]} ----`;
+  return section;
+}
+
+
+function getTerminalText(stdout) {
+  let section = Object.assign({},terminal_json);
+  section.text.text = stdout;
+  return section;
 }
